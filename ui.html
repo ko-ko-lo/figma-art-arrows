@@ -1,17 +1,89 @@
-<h2>Rectangle Creator</h2>
-<p>Count: <input id="count" type="number" value="5"></p>
-<button id="create">Create</button>
-<button id="cancel">Cancel</button>
-<script>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artsy Arrows Plugin</title>
+    <style>
+      body {
+        margin: 16px;
+      }
+      .arrow-container {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .arrow {
+        cursor: pointer;
+        border: 1px solid #b8e3f3;
+        border-radius: 8px;
+        flex: 0 0 calc(33.33% - 16px);
+        box-sizing: border-box;
+      }
+      .arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      svg {
+        padding: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Artsy Handdrawn Arrows</h2>
+    <p>
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+      eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+      voluptua. At vero eos et accusam et justo duo dolores et.
+    </p>
+    <div class="arrow-container" id="arrowList"></div>
 
-document.getElementById('create').onclick = () => {
-  const textbox = document.getElementById('count');
-  const count = parseInt(textbox.value, 10);
-  parent.postMessage({ pluginMessage: { type: 'create-shapes', count } }, '*')
-}
+    <script>
+      const arrows = {
+        arrow1: `<svg width="82" height="102" viewBox="0 0 253 317" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5 289C28.167 305.333 79.3 329.1 98.5 293.5C117.7 257.9 89.833 208.667 73.5 188.5C58.167 170.167 47.7 133.5 128.5 133.5C229.5 133.5 231.5 81 231.5 16M210.5 33L231.5 8L248.5 33" stroke="#9C27B0" stroke-width="9" stroke-linecap="round"/>
+    </svg>
+    `,
+        arrow2: `<svg width="60" height="86" viewBox="0 0 183 269" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M177.5 5C186.457 57.872 103.702 36.38 99 94C91.102 190.768 114.81 319.74 6 237M6 237H37M6 237L14 264.5" stroke="#9C27B0" stroke-width="9" stroke-linecap="round"/>
+  </svg>
+  `,
+        arrow3: `<svg width="103" height="59" viewBox="0 0 323 177" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M5 172C33.5 142.667 112.6 92.5 201 126.5C289.4 160.5 303.83 61 300 7M300 7L280.5 27.5M300 7L318 27.5" stroke="#9C27B0" stroke-width="9" stroke-linecap="round"/>
+  </svg>
+  `,
+        arrow4: `<svg width="72" height="98" viewBox="0 0 216 289" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M211.5 6.66907C167 0.00236738 85.6 9.76907 116 102.169C146.4 194.569 56 255.999 7 275.169M7 275.169L24 243.169M7 275.169L48.5 283.669" stroke="#9C27B0" stroke-width="9" stroke-linecap="round"/>
+  </svg>
+  `,
+        arrow5: `<svg width="70" height="79" viewBox="0 0 210 236" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M5 231.436C28.029 170.967 90.615 62.496 163.94 98.306C214.002 122.755 175.737 176.626 122.002 147.755C68.267 118.884 84.046 15.645 202.986 25.635M202.986 25.635L187.019 43.733M202.986 25.635L178.314 5" stroke="#9C27B0" stroke-width="9" stroke-linecap="round"/>
+  </svg>
+  `,
+        arrow6: `<svg width="102" height="68" viewBox="0 0 313 204" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M5 5C9.5 39.833 44.3 105.2 147.5 88C250.7 70.8 291.17 153.167 298.5 196.5M298.5 196.5L275 178.5M298.5 196.5L308 170.5" stroke="#9C27B0" stroke-width="9" stroke-linecap="round"/>
+  </svg>`,
+      };
 
-document.getElementById('cancel').onclick = () => {
-  parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
-}
+      const arrowList = document.getElementById("arrowList");
 
-</script>
+      // Create buttons for each arrow and display them in the UI
+      Object.entries(arrows).forEach(([key, svg]) => {
+        const div = document.createElement("div");
+        div.classList.add("arrow");
+        div.innerHTML = svg; // Insert SVG into the div
+
+        // Send message when an arrow is clicked
+        div.addEventListener("click", () => {
+          parent.postMessage(
+            { pluginMessage: { type: "insert-arrow", arrowType: key } },
+            "*"
+          );
+        });
+
+        arrowList.appendChild(div);
+      });
+    </script>
+  </body>
+</html>
