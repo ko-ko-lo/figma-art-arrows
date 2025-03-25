@@ -1,13 +1,16 @@
-Below are the steps to get your plugin running. You can also find instructions at:
+## Artsy Arrows - A Figma Plugin
 
 https://www.figma.com/plugin-docs/plugin-quickstart-guide/
+Artsy Arrows is a fun Figma plugin that lets users insert hand-drawn, artistic arrows into their designs effortlessly.
 
-This plugin template uses Typescript and NPM, two standard tools in creating JavaScript applications.
+## Features
 
-First, download Node.js which comes with NPM. This will allow you to install TypeScript and other
-libraries. You can find the download link here:
+- Insert beautifully hand-drawn arrows into your Figma designs
+- Easy selection from a variety of arrows
+- Fully editable SVGs (change stroke, color, size, etc.)
+- Lightweight & fast
 
-https://nodejs.org/en/download/
+  https://nodejs.org/en/download/
 
 Next, install TypeScript using the command:
 
