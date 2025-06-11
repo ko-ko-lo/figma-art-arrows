@@ -85,13 +85,13 @@
       const colorPicker = document.getElementById("colorPicker");
 
       const ColorCombinations = [
-        { name: "Rose Pink", color: "#E8759F" },
-        { name: "Mint Leaf", color: "#66CDAA" },
-        { name: "Sky Teal", color: "#5EC8C8" },
-        { name: "Orchid Purple", color: "#A178C4" },
-        { name: "Sunbeam Yellow", color: "#F6D167" },
-        { name: "Coral Peach", color: "#F99F7C" },
-        { name: "Neutral Ground", color: "#4A4A4A" },
+        { name: "Deep Rose", color: "#C75C7A" },
+        { name: "Olive Sage", color: "#8A9A5B" },
+        { name: "Midnight Cyan", color: "#3A7CA5" },
+        { name: "Velvet Plum", color: "#6D597A" },
+        { name: "Muted Gold", color: "#D8B863" },
+        { name: "Terracotta Clay", color: "#C46D5E" },
+        { name: "Charcoal", color: "#333333" },
       ];
 
       let selectedColor = ColorCombinations[6];
@@ -157,7 +157,7 @@
 
             // Apply selected color to all arrows
             document.querySelectorAll(".arrow svg path").forEach((path) => {
-              path.setAttribute("fill", selectedColor.color);
+              path.setAttribute("stroke", selectedColor.color);
             });
           });
 
