@@ -3,16 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Artsy Arrows Plugin</title>
+    <title>Artistic Arrows Plugin</title>
     <style>
       :root {
         --bg-color-button-hover: white;
         --hover-bg: #8b8c89;
         --bg-color-button: #f2f2f2;
         --color-border: #9eb2bc;
+        --base-color: #333333;
         --border-radius-button: 8px;
         --border-radius-tab: 999px;
-        --hover-scale: 1.08;
+        --hover-scale: 1.05;
         --transition-speed: 0.3s;
         --size-10: 10px;
         --size-16: 16px;
@@ -23,12 +24,15 @@
 
       body {
         margin: var(--size-16);
+        font-family: sans-serif;
+        color: var(--base-color);
       }
 
       #arrowList {
         display: flex;
         gap: var(--size-16);
         flex-wrap: wrap;
+        margin-top: var(--size-24);
       }
 
       div.arrow {
@@ -56,9 +60,9 @@
 
       #colorPicker {
         display: flex;
-        gap: 10px;
+        gap: var(--size-10);
         justify-content: center;
-        margin-bottom: var(--size-16);
+        margin-bottom: var(--size-24);
       }
 
       .color-circle {
@@ -74,11 +78,49 @@
 
       svg {
         padding: var(--size-24);
+        transition: transform var(--transition-speed);
+      }
+
+      svg:hover {
+        transform: scale(var(--hover-scale));
+        transition: all 0.3s ease-in-out;
+      }
+
+      input[type="range"] {
+        -webkit-appearance: none;
+        width: 100px;
+        height: 6px;
+        background: var(--color-border);
+        border-radius: 5px;
+        outline: none;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: var(--size-16);
+        height: var(--size-16);
+        background: var(--base-color);
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      label {
+        display: block;
+        margin-bottom: 12px;
+        text-align: center;
+      }
+      input {
+        display: block;
+        margin: 0 auto;
       }
     </style>
   </head>
   <body>
     <div id="colorPicker"></div>
+    <label for="strokeSlider"
+      >Stroke Width: <strong><span id="strokeValue">5</span>px</strong></label
+    >
+    <input type="range" id="strokeSlider" min="1" max="10" value="5" step="1" />
+
     <div id="arrowList"></div>
 
     <script>
@@ -95,6 +137,7 @@
       ];
 
       let selectedColor = ColorCombinations[6];
+      let selectedStrokeWidth = 5;
 
       /* ------------------------------------------------------------------
       Send request for arrows to code.ts when the UI loads
@@ -102,7 +145,6 @@
 
       window.onload = () => {
         parent.postMessage({ pluginMessage: { type: "request-arrows" } }, "*");
-        createColorPicker();
       };
 
       /* ------------------------------------------------------------------
@@ -127,6 +169,8 @@
                   pluginMessage: {
                     type: "insert-arrow",
                     arrowType: key,
+                    strokeColor: selectedColor.color,
+                    strokeWidth: selectedStrokeWidth,
                   },
                 },
                 "*"
@@ -139,17 +183,23 @@
       };
 
       /* ------------------------------------------------------------------
-      Create Color Picker
+      Create Color Picker and apply selected color
       ------------------------------------------------------------------ */
       function createColorPicker() {
-        ColorCombinations.forEach((color) => {
+        ColorCombinations.forEach((color, index) => {
           const colorDiv = document.createElement("div");
           colorDiv.classList.add("color-circle");
           colorDiv.style.backgroundColor = color.color;
           colorDiv.title = color.name;
 
+          // Mark the default selected color
+          if (index === 6) {
+            colorDiv.classList.add("selected");
+          }
+
           colorDiv.addEventListener("click", () => {
             selectedColor = color;
+
             document
               .querySelectorAll(".color-circle")
               .forEach((c) => c.classList.remove("selected"));
@@ -163,7 +213,29 @@
 
           colorPicker.appendChild(colorDiv);
         });
+
+        document.querySelectorAll(".arrow svg path").forEach((path) => {
+          path.setAttribute("stroke", selectedColor.color);
+        });
       }
+
+      createColorPicker();
+
+      /* ------------------------------------------------------------------
+      Create Stroke Slider and apply selected stroke width
+      ------------------------------------------------------------------ */
+      const strokeSlider = document.getElementById("strokeSlider");
+      const strokeValue = document.getElementById("strokeValue");
+
+      strokeSlider.addEventListener("input", () => {
+        const width = strokeSlider.value;
+        selectedStrokeWidth = width;
+        strokeValue.textContent = width;
+
+        document.querySelectorAll(".arrow svg path").forEach((path) => {
+          path.setAttribute("stroke-width", width);
+        });
+      });
     </script>
   </body>
 </html>
